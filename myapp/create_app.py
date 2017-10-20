@@ -1,8 +1,15 @@
+# Standard Lib
+import logging
+import os
+# Third Party
 from flask import Flask
 from werkzeug.utils import find_modules, import_string
-
+from raven.contrib.flask import Sentry
+# App Specific
 from api_result import ApiResult, ApiException
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 class ApiFlask(Flask):
     def make_response(self, return_value):
@@ -16,6 +23,8 @@ def create_app(config=None):
     app.config.update(config or {})
     register_blueprints(app)
     register_error_handlers(app)
+    register_extensions(app)
+    logger.info('Starting application in env: {}'.format(app.config['env']))
     return app
 
 
@@ -32,3 +41,10 @@ def register_error_handlers(app):
     # Catch all error handler.
     # TODO upgrade to function with logging and response.
     app.register_error_handler(500, lambda err: ('OH NOES!!!', 500))
+
+
+def register_extensions(app):
+    sentry = Sentry(app,
+                    dsn=os.getenv('SENTRY_DSN'),
+                    logging=True, level='INFO')
+

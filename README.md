@@ -9,3 +9,4 @@
     * `export FLASK_APP=hello.py`
     * `export FLASK_DEBUG=1`
 * Initialize a postgres database with setup/init_db.sql
+* If you wish to use sentry use os variables: `export SENTRY_DSN=<your_dsn>`
