@@ -18,13 +18,13 @@ def add_numbers():
 
 def someSetterWare():
     if g.get('eriksFunVar'):
-        print 'already exists'
+        print('already exists')
     else:
         g.eriksFunVar = random()
 
 
 def someMiddleWare():
     if g.get('eriksFunVar'):
-        print g.eriksFunVar
+        print(g.eriksFunVar)
     else:
-        print 'OH NOES'
+        print('OH NOES')
