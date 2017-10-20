@@ -15,6 +15,10 @@ def add_numbers():
         raise ApiException('Numbers must be integers')
     return ApiResult({'sum': a + b})
 
+@bp.route('/crash')
+def crash():
+    return 1/0
+
 
 def someSetterWare():
     if g.get('eriksFunVar'):
