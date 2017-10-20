@@ -5,6 +5,5 @@ app = create_app.create_app({
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:'
 })
 
-@app.errorhandler(500)
-def handle_internal_server_error(e):
-    return 'YOU GOOFED', 500
+if __name__ == '__main__':
+    app.run(debug=True)

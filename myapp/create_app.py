@@ -27,4 +27,8 @@ def register_blueprints(app):
 
 
 def register_error_handlers(app):
+    # Handle raising of an ApiException exception.
     app.register_error_handler(ApiException, lambda err: err.to_result())
+    # Catch all error handler.
+    # TODO upgrade to function with logging and response.
+    app.register_error_handler(500, lambda err: ('OH NOES!!!', 500))
