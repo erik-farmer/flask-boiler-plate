@@ -18,16 +18,24 @@ class ApiFlask(Flask):
         return Flask.make_response(self, return_value)
 
 
-def create_app(config=None):
+def create_app(env):
     app = ApiFlask(__name__)
-    app.config.update(config or {})
+    config = get_config(env)
+    app.config.from_object(config)
     register_blueprints(app)
     register_error_handlers(app)
     register_extensions(app)
     setup_logging()
     logger = logging.getLogger(__name__)
-    logger.info('Starting application in env: {}'.format(app.config['env']))
+    logger.info('Starting application in env: {}'.format(env))
     return app
+
+
+def get_config(env):
+    return {
+        'TEST': 'myapp.config.TestingConfig',
+        'PROD': 'myapp.config.ProductionConfig'
+    }.get(env, 'myapp.config.DevelopmentConfig')
 
 
 def register_blueprints(app):
