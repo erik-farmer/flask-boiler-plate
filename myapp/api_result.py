@@ -1,4 +1,7 @@
+import logging
 from flask import json, Response
+
+logger = logging.getLogger(__name__)
 
 class ApiResult(object):
     def __init__(self, value, status=200):
@@ -17,4 +20,5 @@ class ApiException(Exception):
         self.status = status
 
     def to_result(self):
+        logger.exception(self.message)
         return ApiResult({'message': self.message}, status=self.status)

@@ -1,5 +1,7 @@
 # Standard Lib
 import logging
+from logging.config import dictConfig
+from logging_config import LOGGING_CONFIG
 import os
 # Third Party
 from flask import Flask
@@ -8,8 +10,6 @@ from raven.contrib.flask import Sentry
 # App Specific
 from api_result import ApiResult, ApiException
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
 class ApiFlask(Flask):
     def make_response(self, return_value):
@@ -24,6 +24,8 @@ def create_app(config=None):
     register_blueprints(app)
     register_error_handlers(app)
     register_extensions(app)
+    setup_logging()
+    logger = logging.getLogger(__name__)
     logger.info('Starting application in env: {}'.format(app.config['env']))
     return app
 
@@ -44,7 +46,8 @@ def register_error_handlers(app):
 
 
 def register_extensions(app):
-    sentry = Sentry(app,
-                    dsn=os.getenv('SENTRY_DSN'),
-                    logging=True, level='INFO')
+    sentry = Sentry(app, dsn=os.getenv('SENTRY_DSN'), logging=True, level=logging.ERROR)
+    return app
 
+def setup_logging():
+    dictConfig(LOGGING_CONFIG)

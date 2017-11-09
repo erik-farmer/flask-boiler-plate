@@ -1,3 +1,4 @@
+import logging
 from flask import Blueprint, request
 from myapp.api_result import ApiResult, ApiException
 from flask import g
@@ -5,8 +6,12 @@ from random import random
 
 bp = Blueprint('demo', __name__)
 
+logger = logging.getLogger(__name__)
+
+
 @bp.route('/add')
 def add_numbers():
+    logger.info('WE ABOUT TO ADD')
     someSetterWare()
     a = request.args.get('a', type=int)
     b = request.args.get('b', type=int)
@@ -15,20 +20,16 @@ def add_numbers():
         raise ApiException('Numbers must be integers')
     return ApiResult({'sum': a + b})
 
-@bp.route('/crash')
-def crash():
-    return 1/0
-
 
 def someSetterWare():
     if g.get('eriksFunVar'):
-        print('already exists')
+        logger.info('already exists')
     else:
         g.eriksFunVar = random()
 
 
 def someMiddleWare():
     if g.get('eriksFunVar'):
-        print(g.eriksFunVar)
+        logger.info(g.eriksFunVar)
     else:
-        print('OH NOES')
+        logger.info('OH NOES')
