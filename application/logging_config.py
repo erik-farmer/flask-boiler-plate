@@ -1,5 +1,8 @@
-import os
-SENTRY_DSN = os.getenv('SENTRY_DSN')
+from pathlib import Path
+
+p = Path('.')
+LOGS_DIR = p / 'application' / 'logs' / 'info.txt'
+
 LOGGING_CONFIG = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -12,25 +15,25 @@ LOGGING_CONFIG = {
         },
     },
     'handlers': {
-        'console':{
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': './info_logs.txt'
+            'filename': LOGS_DIR
         },
-        'sentry': {
-            'level': 'ERROR',
-            'class': 'raven.handlers.logging.SentryHandler',
-            'dsn': SENTRY_DSN,
-        },
+        # 'sentry': {
+        #     'level': 'ERROR',
+        #     'class': 'raven.handlers.logging.SentryHandler',
+        #     'dsn': SENTRY_DSN,
+        # },
     },
     'loggers': {
-        'myapp': {
-            'handlers': ['console', 'file', 'sentry'],
+        'application': {
+            'handlers': ['console', 'file'],
             'level': 'INFO',
         }
     }

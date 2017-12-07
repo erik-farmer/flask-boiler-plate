@@ -1,0 +1,4 @@
+Starting application in env: DEV
+Oh Hi there
+Starting application in env: DEV
+Oh Hi there
